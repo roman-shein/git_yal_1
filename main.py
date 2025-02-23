@@ -1,14 +1,16 @@
 import sqlite3
 import sys
 
-from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem
+from main_ui import Ui_MainWindow as main_window
+from addEditCoffeeForm import Ui_MainWindow as add_widget
 
 
-class Coffee(QMainWindow):
+class Coffee(QMainWindow, main_window):
     def __init__(self):
         super().__init__()
-        uic.loadUi("main.ui", self)
+        # uic.loadUi("UI\main.ui", self)
+        self.setupUi(self)
 
         self.addBtn.clicked.connect(self.add_row)
         self.updateBtn.clicked.connect(self.update_row)
@@ -16,7 +18,7 @@ class Coffee(QMainWindow):
         self.add_window = None
         self.update_window = None
 
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.cur = self.con.cursor()
 
         self.update_table()
@@ -51,10 +53,12 @@ class Coffee(QMainWindow):
         self.con.close()
 
 
-class AddWidget(QMainWindow):
+class AddWidget(QMainWindow, add_widget):
     def __init__(self, parent=None, add=True):
         super().__init__(parent)
-        uic.loadUi("addEditCoffeeForm.ui", self)
+        # uic.loadUi(r"UI\addEditCoffeeForm.ui", self)
+        self.setupUi(self)
+
         self.cur = self.parent().cur
         self.add = add
         self.widgets = [
